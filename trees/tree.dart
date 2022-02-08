@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class _Node {
   int value;
   _Node({
@@ -10,6 +12,8 @@ class _Node {
 
 class Tree<E> {
   _Node? _root;
+
+// ------- Public ----------
 
   void insert(int value) {
     var newNode = _Node(value: value);
@@ -53,7 +57,6 @@ class Tree<E> {
     return false;
   }
 
-  // 20, 10, 30, 6, 14, 24, 3, 8, 26
   List<int> breadthFirst() {
     List<int> list = [];
     var current = _root;
@@ -66,7 +69,6 @@ class Tree<E> {
     return list;
   }
 
-// ------- Public ----------
   void traversePreOrder() {
     _traversePreOrder(_root);
   }
@@ -79,7 +81,21 @@ class Tree<E> {
     _traverseInOrder(_root);
   }
 
+  int hight() {
+    if (_root == null)
+      throw Exception(
+          "Root is null, try adding a value before calling this method");
+    return _hight(_root);
+  }
+
 // ------- Private ---------
+
+  int _hight(_Node? root) {
+    if (root!.leftChild == null || root.rightChild == null) return 0;
+
+    return 1 + max(_hight(root.leftChild), _hight(root.rightChild));
+  }
+
   void _traversePreOrder(_Node? root) {
     if (root == null) return;
     print(root.value);
@@ -117,5 +133,6 @@ void main() {
   tree.insert(8);
   tree.insert(26);
 
-  tree.traverseInOrder();
+  //tree.traverseInOrder();
+  print(tree.hight());
 }
