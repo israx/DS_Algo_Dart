@@ -78,7 +78,12 @@ class Tree<E> {
     _traversePreOrder(root.rightChild);
   }
 
+// 3, 6, 8, 10, 14, 20, 24, 26, 30
   void _traverseInOrder(_Node? root) {
+    var left = _traverseInOrder(root!.leftChild);
+    var rt = root.value;
+    var right = _traverseInOrder(root.rightChild);
+
     // left
     // root
     // right
@@ -88,14 +93,12 @@ class Tree<E> {
     _traversePostOrder(_root);
   }
 
-  int? _traversePostOrder(_Node? root) {
-    if (root!.leftChild == null || root.rightChild == null) {
-      print(root.value);
-      return root.value;
-    }
+  void _traversePostOrder(_Node? root) {
+    if (root == null) return;
 
     _traversePostOrder(root.leftChild);
     _traversePostOrder(root.rightChild);
+    print(root.value);
   }
 }
 
