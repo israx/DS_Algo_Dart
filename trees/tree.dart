@@ -66,11 +66,20 @@ class Tree<E> {
     return list;
   }
 
-// PreOrder
+// ------- Public ----------
   void traversePreOrder() {
     _traversePreOrder(_root);
   }
 
+  void traversePostOrder() {
+    _traversePostOrder(_root);
+  }
+
+  void traverseInOrder() {
+    _traverseInOrder(_root);
+  }
+
+// ------- Private ---------
   void _traversePreOrder(_Node? root) {
     if (root == null) return;
     print(root.value);
@@ -80,17 +89,11 @@ class Tree<E> {
 
 // 3, 6, 8, 10, 14, 20, 24, 26, 30
   void _traverseInOrder(_Node? root) {
-    var left = _traverseInOrder(root!.leftChild);
-    var rt = root.value;
-    var right = _traverseInOrder(root.rightChild);
+    if (root == null) return;
 
-    // left
-    // root
-    // right
-  }
-
-  void traversePostOrder() {
-    _traversePostOrder(_root);
+    _traverseInOrder(root.leftChild);
+    print(root.value);
+    _traverseInOrder(root.rightChild);
   }
 
   void _traversePostOrder(_Node? root) {
@@ -114,5 +117,5 @@ void main() {
   tree.insert(8);
   tree.insert(26);
 
-  tree.traversePostOrder();
+  tree.traverseInOrder();
 }
