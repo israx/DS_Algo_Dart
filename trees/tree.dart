@@ -88,12 +88,31 @@ class Tree<E> {
     return _hight(_root);
   }
 
+  int minValue() {
+    if (_root == null)
+      throw Exception(
+          "Root is null, try adding a value before calling this method");
+    return _minValue(_root);
+  }
+
 // ------- Private ---------
+  bool _isLeaf(_Node? root) {
+    if (root == null) return false;
+
+    return root.leftChild == null || root.rightChild == null;
+  }
+
+  int _minValue(_Node? root) {
+    if (_isLeaf(root)) return root!.value;
+
+    return min(min(_minValue(root!.leftChild), _minValue(root.rightChild)),
+        root.value);
+  }
 
   int _hight(_Node? root) {
-    if (root!.leftChild == null || root.rightChild == null) return 0;
+    if (_isLeaf(root)) return 0;
 
-    return 1 + max(_hight(root.leftChild), _hight(root.rightChild));
+    return 1 + max(_hight(root!.leftChild), _hight(root.rightChild));
   }
 
   void _traversePreOrder(_Node? root) {
@@ -132,7 +151,8 @@ void main() {
   tree.insert(3);
   tree.insert(8);
   tree.insert(26);
+  tree.insert(1);
 
   //tree.traverseInOrder();
-  print(tree.hight());
+  print(tree.minValue());
 }
