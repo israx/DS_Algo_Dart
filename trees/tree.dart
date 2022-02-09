@@ -82,20 +82,39 @@ class Tree<E> {
   }
 
   int hight() {
-    if (_root == null)
-      throw Exception(
-          "Root is null, try adding a value before calling this method");
+    _exception();
     return _hight(_root);
   }
 
   int minValue() {
-    if (_root == null)
-      throw Exception(
-          "Root is null, try adding a value before calling this method");
+    _exception();
     return _minValue(_root);
   }
 
+// finding the min value using binary search
+  int minSearch() {
+    _exception();
+    var current = _root;
+    // mantain a reference to the last item in the tree before stopping a loop
+    var last = current;
+
+    while (current != null) {
+      last = current;
+      current = current.leftChild;
+    }
+
+    return last!.value;
+  }
+
 // ------- Private ---------
+
+  Exception? _exception() {
+    return _root == null
+        ? throw Exception(
+            "Root is null, try adding a value before calling this method")
+        : null;
+  }
+
   bool _isLeaf(_Node? root) {
     if (root == null) return false;
 
@@ -155,4 +174,5 @@ void main() {
 
   //tree.traverseInOrder();
   print(tree.minValue());
+  print(tree.minSearch());
 }
