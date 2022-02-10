@@ -15,6 +15,21 @@ class Tree<E> {
 
 // ------- Public ----------
 
+  @override
+  bool operator ==(covariant Tree<int> other) => _equals(_root, other._root);
+
+  bool _equals(_Node? root, _Node? other) {
+    if (root == null && other == null) return true;
+
+    if (root != null && other != null) {
+      return root.value == other.value &&
+          _equals(root.leftChild, other.leftChild) &&
+          _equals(root.rightChild, other.rightChild);
+    }
+
+    return false;
+  }
+
   void insert(int value) {
     var newNode = _Node(value: value);
     if (_root == null) {
@@ -161,18 +176,26 @@ class Tree<E> {
 
 void main() {
   Tree<int> tree = Tree();
+  Tree<int> treeV2 = Tree();
+
+  // Tree v1
   tree.insert(20);
   tree.insert(10);
   tree.insert(30);
   tree.insert(6);
   tree.insert(14);
   tree.insert(24);
-  tree.insert(3);
-  tree.insert(8);
-  tree.insert(26);
-  tree.insert(1);
+  // Tree v2
+  treeV2.insert(20);
+  treeV2.insert(10);
+  treeV2.insert(30);
+  treeV2.insert(6);
+  treeV2.insert(14);
+  treeV2.insert(24);
 
   //tree.traverseInOrder();
-  print(tree.minValue());
-  print(tree.minSearch());
+  // print(tree.minValue());
+  // print(tree.minSearch());
+
+  print(tree == treeV2);
 }
