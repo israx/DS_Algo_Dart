@@ -116,6 +116,13 @@ class Tree<E> {
     return last!.value;
   }
 
+  List<int> getNodesAtDistance(int distance) {
+    List<int> list = [];
+    _getNodesAtDistance(_root, distance, list);
+
+    return list;
+  }
+
 // ------- Private ---------
 
   bool _validate(_Node? root, num min, num max) {
@@ -191,6 +198,18 @@ class Tree<E> {
     print(root.value);
   }
 
+  void _getNodesAtDistance(_Node? root, int distance, List<int> list) {
+    if (root == null) return;
+    if (distance == 0) {
+      list.add(root.value);
+
+      return;
+    }
+
+    _getNodesAtDistance(root.leftChild, distance - 1, list);
+    _getNodesAtDistance(root.rightChild, distance - 1, list);
+  }
+
 // overrides
   @override
   bool operator ==(covariant Tree<int> other) => _equals(_root, other._root);
@@ -207,6 +226,8 @@ void main() {
   tree.insert(6);
   tree.insert(14);
   tree.insert(24);
+  tree.insert(22);
+  tree.insert(26);
   // Tree v2
   treeV2.insert(20);
   treeV2.insert(10);
@@ -224,6 +245,10 @@ void main() {
 
 //------ Validate ------
   // print(tree.validate());
-  tree.swapChilds();
-  print(tree.validate());
+  // tree.swapChilds();
+  // print(tree.validate());
+
+//------ Kth Distance -----
+  var nodeList = tree.getNodesAtDistance(3);
+  print(nodeList);
 }
