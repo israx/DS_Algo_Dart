@@ -67,16 +67,10 @@ class Tree<E> {
     return false;
   }
 
-  List<int> breadthFirst() {
-    List<int> list = [];
-    var current = _root;
-    list.add(current!.value);
-    while (current != null) {
-      list.add(current.leftChild!.value);
-      list.add(current.rightChild!.value);
+  void levelOrderTraversal() {
+    for (var i = 0; i <= hight(); i++) {
+      getNodesAtDistance(i).forEach((print));
     }
-
-    return list;
   }
 
   void traversePreOrder() {
@@ -158,7 +152,7 @@ class Tree<E> {
   bool _isLeaf(_Node? root) {
     if (root == null) return false;
 
-    return root.leftChild == null || root.rightChild == null;
+    return root.leftChild == null && root.rightChild == null;
   }
 
   int _minValue(_Node? root) {
@@ -169,9 +163,9 @@ class Tree<E> {
   }
 
   int _hight(_Node? root) {
-    if (_isLeaf(root)) return 0;
+    if (_isLeaf(root) || root == null) return 0;
 
-    return 1 + max(_hight(root!.leftChild), _hight(root.rightChild));
+    return 1 + max(_hight(root.leftChild), _hight(root.rightChild));
   }
 
   void _traversePreOrder(_Node? root) {
@@ -250,5 +244,8 @@ void main() {
 
 //------ Kth Distance -----
   var nodeList = tree.getNodesAtDistance(3);
-  print(nodeList);
+  //print(nodeList);
+
+//------ Lvl Order Traversal
+  tree.levelOrderTraversal();
 }
