@@ -15,20 +15,15 @@ class Tree<E> {
 
 // ------- Public ----------
 
-  @override
-  bool operator ==(covariant Tree<int> other) => _equals(_root, other._root);
+  void swapChilds() {
+    if (_root == null) throw Exception("Root is empty");
 
-  bool _equals(_Node? root, _Node? other) {
-    if (root == null && other == null) return true;
-
-    if (root != null && other != null) {
-      return root.value == other.value &&
-          _equals(root.leftChild, other.leftChild) &&
-          _equals(root.rightChild, other.rightChild);
-    }
-
-    return false;
+    var temp = _root!.leftChild;
+    _root!.leftChild = _root!.rightChild;
+    _root!.rightChild = temp;
   }
+
+  bool validate() => _validate(_root, double.negativeInfinity, double.infinity);
 
   void insert(int value) {
     var newNode = _Node(value: value);
@@ -123,6 +118,29 @@ class Tree<E> {
 
 // ------- Private ---------
 
+  bool _validate(_Node? root, num min, num max) {
+    if (root != null) {
+      return root.value >= min &&
+          root.value <= max &&
+          _validate(root.leftChild, min, root.value) &&
+          _validate(root.rightChild, root.value, max);
+    }
+
+    return true;
+  }
+
+  bool _equals(_Node? root, _Node? other) {
+    if (root == null && other == null) return true;
+
+    if (root != null && other != null) {
+      return root.value == other.value &&
+          _equals(root.leftChild, other.leftChild) &&
+          _equals(root.rightChild, other.rightChild);
+    }
+
+    return false;
+  }
+
   Exception? _exception() {
     return _root == null
         ? throw Exception(
@@ -172,6 +190,10 @@ class Tree<E> {
     _traversePostOrder(root.rightChild);
     print(root.value);
   }
+
+// overrides
+  @override
+  bool operator ==(covariant Tree<int> other) => _equals(_root, other._root);
 }
 
 void main() {
@@ -197,5 +219,11 @@ void main() {
   // print(tree.minValue());
   // print(tree.minSearch());
 
-  print(tree == treeV2);
+//------ Equals ------
+  // print(tree == treeV2);
+
+//------ Validate ------
+  // print(tree.validate());
+  tree.swapChilds();
+  print(tree.validate());
 }
